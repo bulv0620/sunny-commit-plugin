@@ -1,0 +1,52 @@
+name: Release on Push to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run build
+      run: npm run build
+
+    - name: Extract version from package.json
+      id: get_version
+      run: |
+        VERSION=$(jq -r '.version' < package.json)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Create GitHub Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ env.VERSION }}
+        release_name: Release ${{ env.VERSION }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./sunny-commit-plugin-${{ env.VERSION }}.vsix
+        asset_name: sunny-commit-plugin-${{ env.VERSION }}.vsix
+        asset_content_type: application/vsix

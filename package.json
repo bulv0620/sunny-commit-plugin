@@ -1,0 +1,99 @@
+{
+    "name": "sunny-commit-plugin",
+    "displayName": "sunny-commit-plugin",
+    "description": "Automatically generate git commit message",
+    "version": "0.1.0",
+    "engines": {
+        "vscode": "^1.42.0"
+    },
+    "publisher": "bulv0620",
+    "license": "MIT",
+    "homepage": "https://github.com/bulv0620/sunny-commit-plugin/blob/master/README.md",
+    "bugs": {
+        "url": "https://github.com/bulv0620/sunny-commit-plugin/issues"
+    },
+    "icon": "assets/logo.png",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/bulv0620/sunny-commit-plugin"
+    },
+    "keywords": [
+        "git",
+        "commit",
+        "vscode"
+    ],
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "onCommand:extension.showGitCommit"
+    ],
+    "main": "./out/extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "extension.showGitCommit",
+                "title": "%extension.showGitCommit.title%",
+                "placeholder": "%extension.showGitCommit.placeholder%",
+                "icon": "$(zap)"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Git Commit Plugin",
+            "properties": {
+                "GitCommitPlugin.SunnyId": {
+                    "type": "string",
+                    "default": "",
+                    "markdownDescription": "%extension.configuration.GitCommitPlugin.SunnyId%"
+                },
+                "GitCommitPlugin.MaxSubjectCharacters": {
+                    "type": "number",
+                    "default": 50,
+                    "markdownDescription": "%extension.configuration.GitCommitPlugin.MaxSubjectCharacters%"
+                },
+                "GitCommitPlugin.DefaultCommitTemp": {
+                    "type": "string",
+                    "default": "<type>:<space><subject><space><scope>",
+                    "markdownDescription": "%extension.configuration.GitCommitPlugin.DefaultCommitTemp%"
+                }
+            }
+        },
+        "menus": {
+            "scm/title": [
+                {
+                    "when": "scmProvider == git",
+                    "command": "extension.showGitCommit",
+                    "group": "navigation"
+                }
+            ]
+        }
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "lint": "eslint src --ext ts --fix",
+        "watch": "tsc -watch -p ./",
+        "build": "vsce package",
+        "pretest": "npm run compile && npm run lint",
+        "test": "node ./out/test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/glob": "^7.1.1",
+        "@types/mocha": "^7.0.1",
+        "@types/node": "^12.11.7",
+        "@types/vscode": "^1.42.0",
+        "@typescript-eslint/eslint-plugin": "^2.18.0",
+        "@typescript-eslint/parser": "^2.18.0",
+        "eslint": "^6.8.0",
+        "glob": "^7.1.6",
+        "mocha": "^7.0.1",
+        "typescript": "^4.9.5",
+        "vsce": "^1.95.0",
+        "vscode-test": "^1.3.0"
+    },
+    "dependencies": {
+        "axios": "^1.6.8",
+        "vscode-nls-i18n": "^0.2.4"
+    }
+}

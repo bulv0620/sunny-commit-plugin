@@ -1,0 +1,7 @@
+out
+node_modules
+.vscode-test/
+package-lock.json
+.vsix
+.DS_Store
+sunny-commit-plugin-*.vsix
