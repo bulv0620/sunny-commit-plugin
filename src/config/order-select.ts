@@ -1,15 +1,20 @@
-import { QuickPickItem, QuickPickOptions, workspace } from 'vscode';
+import { QuickPickItem, workspace } from 'vscode';
 import { localize } from 'vscode-nls-i18n';
 import axios from 'axios';
+
+interface MyQuickPickItem extends QuickPickItem {
+    taskId?: string
+    taskCode?: string
+    taskDesc?: string
+}
 
 // 工号
 export const SunnyId =
     workspace.getConfiguration('GitCommitPlugin').get<string>('SunnyId') || '';
 
 export async function GetCommitOrderList() {
-
     
-    const orderDetailType: QuickPickItem[] = [
+    const orderDetailType: MyQuickPickItem[] = [
         {
             label: 'Back',
             detail: localize('extension.commitDetailType.back.detail'),
@@ -26,7 +31,10 @@ export async function GetCommitOrderList() {
         if(myDetail && myDetail.gtArray) {
             orderDetailType.unshift(...myDetail.gtArray.map((el: any)  => ({
                 label: el.id,
-                detail: el.name
+                detail: el.name,
+                taskId: el.billid,
+                taskCode: el.id,
+                taskDesc: el.name.split('-').pop(),
             })));
         }
 

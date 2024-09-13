@@ -15,10 +15,10 @@ export const MaxSubjectCharacters =
 export function GetCommitDetailType() {
     const CommitDetailType: Array<CommitDetailType> = [
         {
-            label: '<Scope>',
-            key: 'scope',
-            description: localize('extension.commitDetailType.scope.description'),
-            detail: localize('extension.commitDetailType.scope.detail'),
+            label: '<Task>',
+            key: 'taskCode',
+            description: localize('extension.commitDetailType.task.description'),
+            detail: localize('extension.commitDetailType.task.detail'),
             isEdit: false,
         },
         {

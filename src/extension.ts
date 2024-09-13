@@ -13,10 +13,7 @@ import GetCommitInputType, { CommitInputType } from './config/commit-input';
 export interface GitMessage {
     [index: string]: string;
     type: string;
-    scope: string;
-    subject: string;
-    body: string;
-    footer: string;
+    subject: string
 }
 
 import { localize, init } from 'vscode-nls-i18n';
@@ -39,10 +36,10 @@ export async function activate(context: vscode.ExtensionContext) {
     //Commit message config
     const message_config: GitMessage = {
         type: '',
-        scope: '',
         subject: '',
-        body: '',
-        footer: '',
+        taskId: '',
+        taskCode: '',
+        taskDesc: ''
     };
     //清除填写信息 Clear message
     function clearMessage() {
@@ -55,30 +52,27 @@ export async function activate(context: vscode.ExtensionContext) {
     //组合信息 Portfolio information
     function messageCombine(config: GitMessage) {
         let result = DefaultCommitTemp;
-        result = config.icon
-            ? result.replace(/<icon>/g, config.icon)
-            : result.replace(/<icon>/g, '');
         result =
             config.type !== ''
                 ? result.replace(/<type>/g, config.type)
                 : result.replace(/<type>/g, '');
         result =
-            config.scope !== ''
-                ? result.replace(/<scope>/g, config.scope)
-                : result.replace(/\(?<scope>\)?/g, '');
-        result =
             config.subject !== ''
                 ? result.replace(/<subject>/g, config.subject)
                 : result.replace(/<subject>/g, '');
         result =
-            config.body !== ''
-                ? result.replace(/<body>/g, config.body)
-                : result.replace(/<body>/g, '');
+            config.taskId !== ''
+                ? result.replace(/<taskId>/g, config.taskId)
+                : result.replace(/<taskId>/g, '');
         result =
-            config.footer !== ''
-                ? result.replace(/<footer>/g, config.footer)
-                : result.replace(/<footer>/g, '');
-        result = result.replace(/<enter>/g, '\n\n');
+            config.taskCode !== ''
+                ? result.replace(/<taskCode>/g, config.taskCode)
+                : result.replace(/<taskCode>/g, '');
+        result =
+            config.taskDesc !== ''
+                ? result.replace(/<taskDesc>/g, config.taskDesc)
+                : result.replace(/<taskDesc>/g, '');
+        result = result.replace(/<enter>/g, '\n');
         result = result.replace(/<space>/g, ' ');
 
         return result.trim();
@@ -146,8 +140,8 @@ export async function activate(context: vscode.ExtensionContext) {
             .then(select => {
                 const label = (select && select.label) || '';
                 if (label !== '') {
-                    const _key = select?.key || 'body';
-                    if(_key === 'scope') {
+                    const _key = select?.key || 'complete';
+                    if(_key === 'taskCode') {
                         SelectOrder(_key);
                         return false;
                     }
@@ -203,7 +197,9 @@ export async function activate(context: vscode.ExtensionContext) {
                     }
                     else {
                         _detailType && (_detailType.isEdit = true);
-                        message_config.scope = label;
+                        message_config.taskId = select!.taskId as string;
+                        message_config.taskCode = select!.taskCode as string;
+                        message_config.taskDesc = select!.taskDesc as string;
                         recursiveInputMessage(startMessageInput);
                         return false;
                     }
