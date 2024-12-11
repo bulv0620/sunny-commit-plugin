@@ -54,7 +54,7 @@
                 },
                 "GitCommitPlugin.DefaultCommitTemp": {
                     "type": "string",
-                    "default": "feat： <subject><enter><enter><taskDesc> 任务单号：<taskCode><enter>https://ioa.sunnyoptical.cn/spa/cube/index.html#/main/cube/card?billid=<taskId>&type=0&modeId=16001",
+                    "default": "<type>: <subject><enter><enter><taskDesc> 任务单号: <taskCode><enter>https://ioa.sunnyoptical.cn/spa/cube/index.html#/main/cube/card?billid=<taskId>&type=0&modeId=16001",
                     "markdownDescription": "%extension.configuration.GitCommitPlugin.DefaultCommitTemp%"
                 }
             }
